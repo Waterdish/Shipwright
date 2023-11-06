@@ -351,7 +351,9 @@ endif()
 ################################################################################
 # Compile definitions
 ################################################################################
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
 find_package(SDL2)
+endif()
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 if (BUILD_CROWD_CONTROL)
@@ -610,6 +612,29 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
                 -Wno-stringop-overflow
             >
         )
+    elseif (CMAKE_SYSTEM_NAME STREQUAL "Android")
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -O2
+            
+            -Wno-error
+            -Wno-format-security
+            # disable some warnings to not clutter output
+            -Wno-multichar
+            -Wno-return-type
+            -Wno-narrowing
+            -Wno-switch-outside-range
+            $<$<COMPILE_LANGUAGE:C>:
+                -Werror-implicit-function-declaration
+                -Wno-incompatible-pointer-types
+                -Wno-discarded-array-qualifiers
+                -Wno-discarded-qualifiers
+                -Wno-int-conversion
+                -Wno-builtin-declaration-mismatch
+                -Wno-switch-unreachable
+                -Wno-stringop-overflow
+                -Wno-implicit-int
+            >
+        )
     else()
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 		set(CPU_OPTION -msse2 -mfpmath=sse)
@@ -652,7 +677,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	)
 endif()
 
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS|Android")
     add_custom_command(
 		TARGET ${PROJECT_NAME}
 		POST_BUILD
@@ -720,6 +745,16 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
         "ZAPDUtils;"
         SDL2::SDL2
         -lglad
+        Threads::Threads
+    )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+        "ZAPDUtils;"
+        "ZAPDLib;"
+        SDL2::SDL2
         Threads::Threads
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")

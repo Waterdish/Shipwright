@@ -130,7 +130,7 @@ void DrawMenuBarIcon() {
 void DrawShipMenu() {
     if (ImGui::BeginMenu("Ship")) {
         if (ImGui::MenuItem("Hide Menu Bar",
-#if !defined(__SWITCH__) && !defined(__WIIU__)
+#if !defined(__SWITCH__) && !defined(__WIIU__) && !defined(__ANDROID__)
          "F1"
 #else
          "[-]"
@@ -139,7 +139,7 @@ void DrawShipMenu() {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
         }
         UIWidgets::Spacer(0);
-#if !defined(__SWITCH__) && !defined(__WIIU__)
+#if !defined(__SWITCH__) && !defined(__WIIU__) && !defined(__ANDROID__)
         if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
             LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
@@ -148,7 +148,7 @@ void DrawShipMenu() {
         if (ImGui::MenuItem("Reset",
 #ifdef __APPLE__
                             "Command-R"
-#elif !defined(__SWITCH__) && !defined(__WIIU__)
+#elif !defined(__SWITCH__) && !defined(__WIIU__) && !defined(__ANDROID__)
                             "Ctrl+R"
 #else
                             ""
@@ -156,7 +156,7 @@ void DrawShipMenu() {
                             )) {
             std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
-#if !defined(__SWITCH__) && !defined(__WIIU__)
+#if !defined(__SWITCH__) && !defined(__WIIU__) && !defined(__ANDROID__)
         UIWidgets::Spacer(0);
         if (ImGui::MenuItem("Open App Files Folder")) {
             std::string filesPath = LUS::Context::GetInstance()->GetAppDirectoryPath();
