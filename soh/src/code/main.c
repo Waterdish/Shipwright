@@ -54,6 +54,9 @@ int SDL_main(int argc, char** argv)
     ShowWindow(GetConsoleWindow(), SW_HIDE);
 #endif
 
+#elif defined(__ANDROID__)
+int SDL_main(int argc, char** argv)
+{
 #else //_WIN32
 int main(int argc, char** argv)
 {
