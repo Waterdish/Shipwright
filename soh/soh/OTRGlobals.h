@@ -23,6 +23,8 @@ const std::string appShortName = "soh";
 
 #ifdef __WIIU__
 const uint32_t defaultImGuiScale = 3;
+#elif defined (__ANDROID__)
+const uint32_t defaultImGuiScale = 3;
 #else
 const uint32_t defaultImGuiScale = 1;
 #endif

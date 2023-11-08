@@ -385,7 +385,11 @@ void DrawSettingsMenu() {
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
+#ifdef __ANDROID__ //Defaults the android scale to the value set in OTRGlobals
+            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 3)) {
+#else
             if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+#endif
                 OTRGlobals::Instance->ScaleImGui();
             }
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
